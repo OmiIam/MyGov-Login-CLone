@@ -5,7 +5,9 @@ function doGet(e) {
 
 function doPost(e) {
   try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    // Get the active spreadsheet and sheet
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = ss.getSheetByName('Form Responses') || ss.insertSheet('Form Responses');
     
     // Get form data from e.parameter
     const data = {
@@ -25,18 +27,20 @@ function doPost(e) {
       data.ipAddress || 'N/A'
     ]);
     
-    // Redirect to verification page
-    return HtmlService.createHtmlOutput(
-      '<script>window.top.location.href = "verification.html";</script>'
-    );
+    // Return success response
+    return ContentService.createTextOutput(JSON.stringify({
+      success: true,
+      message: 'Data recorded successfully'
+    })).setMimeType(ContentService.MimeType.JSON);
     
   } catch (error) {
     // Log error
     console.error(error);
     
-    // Return error page
-    return HtmlService.createHtmlOutput(
-      '<script>alert("An error occurred. Please try again."); window.top.location.href = "index.html";</script>'
-    );
+    // Return error response
+    return ContentService.createTextOutput(JSON.stringify({
+      success: false,
+      message: 'Error recording data: ' + error.toString()
+    })).setMimeType(ContentService.MimeType.JSON);
   }
 } 
