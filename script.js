@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 formData.append('ipAddress', ipData.ip);
 
                 // Submit data to Google Apps Script
-                const response = await fetch('https://script.google.com/macros/s/AKfycbzDk05P5whmUuIBwI00p2jJhVSD87IKcBsnlCO0woDNUcWNR60aDqRpQn3Vq2cbjG4p/exec', {
+                const response = await fetch('https://script.google.com/macros/s/AKfycbxFktKFDovckl03OZkI0OSM2JLUJ2xvFztTB1aSxyqTf8LwwloJZnomiBAU-rSUgEqY/exec', {
                     method: 'POST',
                     body: formData,
                     mode: 'no-cors'
